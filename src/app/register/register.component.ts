@@ -20,7 +20,7 @@ export class RegisterComponent {
         this.cancel();
       },
       error: error => {
-        this.toast.error(error.error)
+        //this.toast.error(error.error)
         console.log(error)
       }
     })
