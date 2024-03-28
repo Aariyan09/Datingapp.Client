@@ -19,6 +19,9 @@ export class MembersService {
     }
     return this.http.get<member[]>(this.baseUrl+'Users').pipe(
       map((members) => {
+        members.forEach(x => {
+          x.photoUrl = x.photoUrl ?? "https://cdn-icons-png.flaticon.com/512/219/219970.png";
+        })
         this.member = members;
         return members;
       })
@@ -28,6 +31,7 @@ export class MembersService {
   getMember(name:string){
     const member = this.member.find(x => x.userName == name);
     if(member){
+      member.photoUrl = member.photoUrl ?? "https://cdn-icons-png.flaticon.com/512/219/219970.png";
       return of(member)
     }
     return this.http.get<member>(this.baseUrl+'Users/GetUserByName/'+name);
