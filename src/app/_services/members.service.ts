@@ -7,6 +7,7 @@ import { PaginationResult } from '../_models/pagination';
 import { UserParams } from '../_models/userparams';
 import { AccountService } from './account.service';
 import { User } from '../_models/users';
+import { ToastPackage } from 'ngx-toastr';
 
 @Injectable({
   providedIn: 'root'
@@ -53,7 +54,7 @@ export class MembersService {
       return of(response);
     } 
 
-    let params = this.getPaginationHeaders(userParams);
+    let params = this.getPaginationHeaders(userParams.pageNumber,userParams.pageSize);
     params = params.append('minAge',userParams.minAge);
     params = params.append('maxAge',userParams.maxAge);
     params = params.append('gender',userParams.gender);
@@ -96,6 +97,17 @@ export class MembersService {
     return this.http.delete(this.baseUrl+'users/delete-photo/'+photoId);
   }
 
+  addLike(username:string){
+    return this.http.post(this.baseUrl+'likes/'+username,{});
+  }
+
+  getLikes(type:string,pageNumber:number,pageSize:number){
+    let params = this.getPaginationHeaders(pageNumber,pageSize);
+    params = params.append('type',type);
+    return this.GetPaginatedResults<member[]>(this.baseUrl+'likes',params);
+  }
+
+
 
   private GetPaginatedResults<T>(url:string,params: HttpParams) {
     const paginatedResult:PaginationResult<T> = new PaginationResult<T>();
@@ -114,11 +126,11 @@ export class MembersService {
     );
   }
 
-  private getPaginationHeaders(userParams:UserParams):HttpParams{
+  private getPaginationHeaders(pageNumber:number,pageSize:number):HttpParams{
     let params = new HttpParams();
-    if(userParams){
-      params = params.append('pageNumber',userParams.pageNumber);
-      params = params.append('pageSize',userParams.pageSize);
+    if(pageNumber && pageSize){
+      params = params.append('pageNumber',pageNumber);
+      params = params.append('pageSize',pageSize);
     }
     return params;
   }
