@@ -27,6 +27,7 @@ import { LoadingInterceptor } from './_interceptors/loading.interceptor';
 import { PhotoEditorComponent } from './members/photo-editor/photo-editor.component';
 import { TextInputComponent } from './_forms/text-input/text-input.component';
 import { DatePickerComponent } from './_forms/date-picker/date-picker.component';
+import { MemberMessageComponent } from './members/member-message/member-message.component';
 
 
 @NgModule({
@@ -56,7 +57,6 @@ import { DatePickerComponent } from './_forms/date-picker/date-picker.component'
     FormsModule,
     SharedModule,
     ReactiveFormsModule
-
   ],
   providers: [
     {provide:HTTP_INTERCEPTORS,useClass:ErrorInterceptor,multi:true},
