@@ -20,6 +20,10 @@ export class AccountService {
       map((response:User) => {
         const user = response;
         if(user){
+          user.roles = [];
+          const roles = this.getCodedToken(user.token).role;
+          Array.isArray(roles) ? user.roles = roles : user.roles.push(roles);
+
           localStorage.setItem('user',JSON.stringify(user))
           this.currentUser$.next(user);
         }
@@ -41,6 +45,10 @@ export class AccountService {
     return this.http.post<User>(this.baseUrl+'account/Register',model).pipe(
       map((response:User) => {
         if(response){
+          response.roles = [];
+          const roles = this.getCodedToken(response.token).role;
+          Array.isArray(roles) ? response.roles = roles : response.roles.push(roles);
+
           localStorage.setItem("user",JSON.stringify(response));
           this.currentUser$.next(response);
         }
@@ -48,4 +56,7 @@ export class AccountService {
     );
   }
 
+  getCodedToken(token:string){
+    return JSON.parse(atob(token.split('.')[1]))
+  }
 }

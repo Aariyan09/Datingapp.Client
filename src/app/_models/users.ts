@@ -3,6 +3,7 @@ export interface User{
     token:string;
     knownAs:string;
     gender:string;
+    roles:string[]
 }
 
 
